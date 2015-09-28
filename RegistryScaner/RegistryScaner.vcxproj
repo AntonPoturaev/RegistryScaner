@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0845E8C5-61D9-4477-BD94-2B3D5E6F998D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RegistryScaner</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="boost.inc.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="boost.inc.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="DBG_SetThreadName.h" />
+    <ClInclude Include="DllModule.h" />
+    <ClInclude Include="Handle2Path.h" />
+    <ClInclude Include="HiLevelRegistryToolset.h" />
+    <ClInclude Include="HiLevelScanner.h" />
+    <ClInclude Include="HiLevelScannerController.h" />
+    <ClInclude Include="HiLevelScannerUseCase1.h" />
+    <ClInclude Include="IRegistryToolset.h" />
+    <ClInclude Include="IScanner.h" />
+    <ClInclude Include="ntdll_module.h" />
+    <ClInclude Include="RegistryToolsetBase.h" />
+    <ClInclude Include="KeyInfo.h" />
+    <ClInclude Include="ScannerFactory.h" />
+    <ClInclude Include="ScanInfo.h" />
+    <ClInclude Include="SimpleSingletonTpl.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SystemError.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Value.h" />
+    <ClInclude Include="ValueInfo.h" />
+    <ClInclude Include="WideStaticBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DllModule.cpp" />
+    <ClCompile Include="Handle2Path.cpp" />
+    <ClCompile Include="HiLevelRegistryToolset.cpp" />
+    <ClCompile Include="HiLevelScanner.cpp" />
+    <ClCompile Include="HiLevelScannerController.cpp" />
+    <ClCompile Include="HiLevelScannerUseCase1.cpp" />
+    <ClCompile Include="KeyInfo.cpp" />
+    <ClCompile Include="ntdll_module.cpp" />
+    <ClCompile Include="RegistryScanerMain.cpp" />
+    <ClCompile Include="RegistryToolsetBase.cpp" />
+    <ClCompile Include="ScanInfo.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SystemError.cpp" />
+    <ClCompile Include="Value.cpp" />
+    <ClCompile Include="ValueInfo.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

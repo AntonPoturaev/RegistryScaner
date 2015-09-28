@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="stdafx">
+      <UniqueIdentifier>{df9df112-37bc-47f7-86a4-e557026fc4e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RegestryScaner">
+      <UniqueIdentifier>{65c6ac7f-6ed9-43af-85a2-e95f2715d656}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>stdafx</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="WideStaticBuffer.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyInfo.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="IRegistryToolset.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="ValueInfo.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="HiLevelRegistryToolset.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="RegistryToolsetBase.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="ScanInfo.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="Value.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemError.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="HiLevelScanner.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="HiLevelScannerController.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="IScanner.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="ScannerFactory.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="DBG_SetThreadName.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="DllModule.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="ntdll_module.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="Handle2Path.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleSingletonTpl.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="HiLevelScannerUseCase1.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>stdafx</Filter>
+    </ClCompile>
+    <ClCompile Include="RegistryScanerMain.cpp" />
+    <ClCompile Include="HiLevelRegistryToolset.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="RegistryToolsetBase.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="Value.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemError.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="HiLevelScanner.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="HiLevelScannerController.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="DllModule.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="ntdll_module.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle2Path.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueInfo.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyInfo.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="ScanInfo.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="HiLevelScannerUseCase1.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
