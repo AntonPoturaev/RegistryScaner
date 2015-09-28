@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	struct ValueInfo
 	{
@@ -22,4 +22,4 @@ namespace RegestryScanner {
 
 	std::wstring ToWideString(ValueInfo const& info);
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

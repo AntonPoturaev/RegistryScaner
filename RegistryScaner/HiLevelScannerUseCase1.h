@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -15,7 +15,7 @@
 #include <functional>
 #include <deque>
 
-namespace RegestryScanner { namespace UseCase {
+namespace RegistryScanner { namespace UseCase {
 	
 	class HiLevelScannerUseCase1
 	{
@@ -47,4 +47,4 @@ namespace RegestryScanner { namespace UseCase {
 		std::condition_variable m_Condition;
 	};
 		
-}} /// end namespace RegestryScanner::UseCase
+}} /// end namespace RegistryScanner::UseCase

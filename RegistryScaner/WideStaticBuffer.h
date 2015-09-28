@@ -1,29 +1,25 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
 
 #pragma once
 
-#include <windows.h>
-#include <string>
+#include "StaticBuffer.h"
 
-namespace RegestryScanner { namespace Details {
+namespace RegistryScanner { namespace Details {
 
 	template<DWORD Capacity>
-	struct WideStaticBuffer
+	class WideStaticBuffer
+		: public StaticBuffer<wchar_t, Capacity>
 	{
-		WideStaticBuffer() {
-			::memset(this, 0, sizeof(WideStaticBuffer));
+		typedef StaticBuffer<wchar_t, Capacity> Super_t;
+	public:
+		WideStaticBuffer(size_t s = 0)
+			: Super_t(s)
+		{
 		}
-
-		std::wstring ToString() const {
-			return std::wstring(data, size);
-		}
-
-		TCHAR data[Capacity];
-		DWORD size;
 	};
 
-}} /// end namespace RegestryScanner::Details
+}} /// end namespace RegistryScanner::Details

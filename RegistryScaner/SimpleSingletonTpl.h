@@ -1,12 +1,12 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
 
 #pragma once
 
-namespace RegestryScanner { namespace Details {
+namespace RegistryScanner { namespace Details {
 
 	template<typename T>
 	struct SimpleSingleton
@@ -18,4 +18,4 @@ namespace RegestryScanner { namespace Details {
 		}
 	};
 
-}} /// end namespace RegestryScanner::Details
+}} /// end namespace RegistryScanner::Details

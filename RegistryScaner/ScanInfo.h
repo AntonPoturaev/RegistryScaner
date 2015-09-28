@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -11,7 +11,7 @@
 
 #include <boost/optional.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	struct ScanInfo
 	{
@@ -37,4 +37,4 @@ namespace RegestryScanner {
 	std::wstring ToWideString(ScanInfo::Data_t const& infoData);
 	std::wstring ToWideString(ScanInfo const& info);
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

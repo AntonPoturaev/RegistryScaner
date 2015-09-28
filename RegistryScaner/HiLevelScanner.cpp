@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -14,7 +14,7 @@
 #include <boost/scope_exit.hpp>
 #include <boost/format.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	HiLevelScanner::CreationParams::CreationParams(HKEY rootHandle_, DWORD accessMask_)
 		: rootHandle(rootHandle_)
@@ -198,4 +198,4 @@ namespace RegestryScanner {
 		return IScannerPtr_t(new HiLevelScanner(std::forward<HiLevelScanner::CreationParams>(params)));
 	}
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

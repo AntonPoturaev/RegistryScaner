@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -11,7 +11,7 @@
 #include <string>
 #include <memory>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	namespace {
 		std::string _ConstructError(DWORD errorCode)
@@ -54,4 +54,4 @@ namespace RegestryScanner {
 		return m_ErrorCode;
 	}
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

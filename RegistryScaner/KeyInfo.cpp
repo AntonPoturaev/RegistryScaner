@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -9,7 +9,7 @@
 
 #include <boost/format.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	KeyInfo::KeyInfo() {
 		::memset(this, 0, sizeof(KeyInfo));
@@ -24,4 +24,4 @@ namespace RegestryScanner {
 		);
 	}
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

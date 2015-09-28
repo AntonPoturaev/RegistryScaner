@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -11,7 +11,7 @@
 #include <thread>
 #include <mutex>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	class HiLevelScannerController
 	{
@@ -65,5 +65,5 @@ namespace RegestryScanner {
 		std::unique_ptr<std::thread> m_Worker;
 	};
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner
 

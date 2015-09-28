@@ -89,6 +89,7 @@
     <ClInclude Include="ScannerFactory.h" />
     <ClInclude Include="ScanInfo.h" />
     <ClInclude Include="SimpleSingletonTpl.h" />
+    <ClInclude Include="StaticBuffer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemError.h" />
     <ClInclude Include="targetver.h" />

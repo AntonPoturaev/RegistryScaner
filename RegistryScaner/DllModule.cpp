@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -7,7 +7,7 @@
 #include "StdAfx.h"
 #include "DllModule.h"
 
-namespace RegestryScanner { namespace Details {
+namespace RegistryScanner { namespace Details {
 
 	DllModule::DllModule(String const& libName, DWORD flags)
 		: m_LibName(_T(""))
@@ -70,4 +70,4 @@ namespace RegestryScanner { namespace Details {
 		return m_Handle != nullptr;
 	}
 
-}} /// end namespace RegestryScanner::Details
+}} /// end namespace RegistryScanner::Details

@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -8,7 +8,7 @@
 
 #include "RegistryToolsetBase.h"
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	class HiLevelRegistryToolset 
 		: public RegistryToolsetBase
@@ -22,4 +22,4 @@ namespace RegestryScanner {
 		virtual LONG GetValueInfoAtIndex(HKEY handle, DWORD index, ValueInfo& valueInfo) const override;
 	};
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

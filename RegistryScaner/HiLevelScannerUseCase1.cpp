@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -14,7 +14,7 @@
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
 
-namespace RegestryScanner { namespace UseCase {
+namespace RegistryScanner { namespace UseCase {
 	
 	int HiLevelScannerUseCase1::Run()
 	{
@@ -161,4 +161,4 @@ namespace RegestryScanner { namespace UseCase {
 		m_Condition.notify_one();
 	}
 				
-}} /// end namespace RegestryScanner::UseCase
+}} /// end namespace RegistryScanner::UseCase

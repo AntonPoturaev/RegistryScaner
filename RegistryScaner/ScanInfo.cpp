@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -10,7 +10,7 @@
 
 #include <boost/format.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	namespace {
 		struct _DataDecoder 
@@ -50,4 +50,4 @@ namespace RegestryScanner {
 		return result;
 	}
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

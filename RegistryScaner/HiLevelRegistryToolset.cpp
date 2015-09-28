@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -10,7 +10,7 @@
 
 #include <cassert>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 	
 	LONG HiLevelRegistryToolset::OpenKey(HKEY handle, std::wstring const& subkeyName, DWORD accessMask, PHKEY outHandle) const
 	{
@@ -45,8 +45,7 @@ namespace RegestryScanner {
 	{
 		assert(handle != nullptr && "Bad params.");
 
-		Details::WideStaticBuffer<KeyInfo::maxKeyLength> keyNameBuffer;
-		keyNameBuffer.size = KeyInfo::maxKeyLength;
+		Details::WideStaticBuffer<KeyInfo::maxKeyLength> keyNameBuffer(KeyInfo::maxKeyLength);
 
 		LONG const result = ::RegEnumKeyEx(handle, index, keyNameBuffer.data, &keyNameBuffer.size
 			, nullptr /// reserved
@@ -62,8 +61,7 @@ namespace RegestryScanner {
 	{
 		assert(handle != nullptr && "Bad params.");
 
-		Details::WideStaticBuffer<ValueInfo::maxValueName> valueNameBuffer;
-		valueNameBuffer.size = ValueInfo::maxValueName;
+		Details::WideStaticBuffer<ValueInfo::maxValueName> valueNameBuffer(ValueInfo::maxValueName);
 		DWORD dataSize = 0;
 		DWORD type = -1;
 
@@ -88,4 +86,4 @@ namespace RegestryScanner {
 		return result;
 	}
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

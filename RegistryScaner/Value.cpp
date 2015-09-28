@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -10,7 +10,7 @@
 
 #include <cassert>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	IrregularValue::IrregularValue(RawByteData_t const& data) 
 		: std::logic_error("The value content isn't comply with the value type.")
@@ -607,4 +607,4 @@ namespace RegestryScanner {
 		return boost::apply_visitor(_Value2WideStringDecoder(), value);
 	}
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

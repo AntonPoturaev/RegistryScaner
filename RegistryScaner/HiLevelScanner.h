@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -12,7 +12,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	class HiLevelScanner 
 		: public IScanner
@@ -53,4 +53,4 @@ namespace RegestryScanner {
 		OnInformation_t m_OnInformationSignal;
 	};
 	
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

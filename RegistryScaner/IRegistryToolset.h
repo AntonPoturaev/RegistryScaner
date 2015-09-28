@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -9,7 +9,7 @@
 #include "ValueInfo.h"
 #include "KeyInfo.h"
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	struct IRegistryToolset
 	{
@@ -22,4 +22,4 @@ namespace RegestryScanner {
 		virtual LONG GetValueInfoAtIndex(HKEY handle, DWORD index, ValueInfo& valueInfo) const = 0;
 	};
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

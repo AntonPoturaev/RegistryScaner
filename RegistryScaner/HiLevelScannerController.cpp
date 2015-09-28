@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -14,7 +14,7 @@
 
 #include <boost/assign/list_of.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	HiLevelScannerController::HiLevelScannerController(Params_t&& params, size_t chunkSize)
 		: m_HkeyStore(std::forward<Params_t>(params))
@@ -173,4 +173,4 @@ namespace RegestryScanner {
 		//std::wcout << L"\n*** Information: " << message << L'\n' << std::endl;
 	}
 	
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

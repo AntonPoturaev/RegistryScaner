@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -14,7 +14,7 @@
 
 #include <boost/signals2.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	struct IScannerObserver
 	{
@@ -40,4 +40,4 @@ namespace RegestryScanner {
 
 	typedef std::unique_ptr<IScanner> IScannerPtr_t;
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

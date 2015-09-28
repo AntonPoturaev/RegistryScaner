@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -14,7 +14,7 @@
 #include <boost/variant.hpp>
 #include <boost/shared_array.hpp>
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	enum class ValueType
 	{
@@ -140,4 +140,4 @@ namespace RegestryScanner {
 
 	std::wstring Value2WideString(Value_t const& value);
 	
-} /// end namespace RegestryScanner 
+} /// end namespace RegistryScanner 

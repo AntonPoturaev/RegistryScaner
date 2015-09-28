@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -8,7 +8,7 @@
 
 #include "WideStaticBuffer.h"
 
-namespace RegestryScanner {
+namespace RegistryScanner {
 
 	struct KeyInfo
 	{
@@ -34,4 +34,4 @@ namespace RegestryScanner {
 
 	std::wstring ToWideString(KeyInfo const& info);
 
-} /// end namespace RegestryScanner
+} /// end namespace RegistryScanner

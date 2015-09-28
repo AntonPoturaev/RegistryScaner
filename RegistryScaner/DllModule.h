@@ -1,5 +1,5 @@
 /**
-	Project - Regestry Scanner
+	Project - Registry Scanner
 	Copyright (c) 2015 Poturaev A.S.
 	e-mail: a.s.poturaev@gmail.com
 */
@@ -10,7 +10,7 @@
 #include <xstring>
 #include <assert.h>
 
-namespace RegestryScanner { namespace Details {
+namespace RegistryScanner { namespace Details {
 
 	class DllModule
 	{
@@ -52,4 +52,4 @@ namespace RegestryScanner { namespace Details {
 		HMODULE m_Handle;
 	};
 
-}} /// end namespace RegestryScanner::Details
+}} /// end namespace RegistryScanner::Details
