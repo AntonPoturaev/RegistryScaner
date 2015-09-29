@@ -10,6 +10,13 @@
 #include "HiLevelScanner.h"
 #include "DBG_SetThreadName.h"
 
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/format.hpp>
+#include <boost/date_time/posix_time/posix_time_io.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/lexical_cast.hpp>
+
 namespace RegistryScanner {
 
 	HiLevelScannerController::HiLevelScannerController(Descriptors_t&& params, std::ostream& os, size_t chunkSize)
@@ -60,6 +67,102 @@ namespace RegistryScanner {
 		_StopScan(true, true);
 	}
 
+	namespace {
+
+		std::string _GenControllerFileName() {
+			return boost::str(boost::format("HiLevelScannerController_%1%_%2%.log") % ::GetCurrentProcessId() % boost::lexical_cast<std::string>(boost::posix_time::second_clock::universal_time()));
+		}
+
+		class _ScanerObserver
+			: public HiLevelScanner::_ScanerObserver
+		{
+		public:
+			typedef HiLevelScannerController::ConnectionStore_t ConnectionStore_t;
+			typedef HiLevelScannerController::Connection_t Connection_t;
+			typedef IScanerDispatcher::OnPathFoundSignal_t OnPathFoundSignal_t;
+
+		public:
+			_ScanerObserver(IScanerDispatcher& disp, OnPathFoundSignal_t::slot_type&& slot, boost::filesystem::path&& filePath)
+				: m_FilePath(std::forward<boost::filesystem::path>(filePath))
+				, m_ConnectionStore(_Build(disp, std::forward<OnPathFoundSignal_t::slot_type>(slot)))
+			{
+				assert(!m_FilePath.empty());
+			}
+
+			virtual ~_ScanerObserver() override
+			{
+				if (m_File.is_open())
+				{
+					m_File.flush();
+					m_File.close();
+				}
+			}
+
+		private:
+			ConnectionStore_t _Build(IScanerDispatcher& disp, OnPathFoundSignal_t::slot_type&& slot)
+			{
+				ConnectionStore_t connectionStore;
+
+				connectionStore.emplace_back(
+					disp.AttachOnPathFoundSignal([this](ScanInfoPtr_t scanInfo) {
+					m_OnPathFoundSignal(scanInfo);
+				})
+					);
+
+				connectionStore.emplace_back(
+					disp.AttachOnErrorFoundSignal([this](LONG erroCode, std::wstring message) {
+					_OnErrorFound(erroCode, message);
+				})
+					);
+
+				connectionStore.emplace_back(
+					disp.AttachOnOperationSuccessSignal([this](std::wstring message) {
+					_OnOperationSuccess(message);
+				})
+					);
+
+				connectionStore.emplace_back(
+					disp.AttachOnInformationSignal([this](std::wstring message) {
+					_OnInformation(message);
+				})
+					);
+
+				connectionStore.emplace_back(m_OnPathFoundSignal.connect(slot));
+
+				return connectionStore;
+			}
+
+		private:
+			void _OnErrorFound(LONG erroCode, std::wstring message) {
+				_File() << boost::str(boost::format("\n*** Error found. Reason: error code: %1%, message: %2% \n") % erroCode % Details::StringCnv::w2a(message)) << std::endl;
+			}
+
+			void _OnOperationSuccess(std::wstring message) {
+				_File() << boost::str(boost::format("\n*** Operation success. Info: %1% \n") % Details::StringCnv::w2a(message)) << std::endl;
+			}
+
+			void _OnInformation(std::wstring message) {
+				_File() << boost::str(boost::format("\n*** Information: %1% \n") % Details::StringCnv::w2a(message)) << std::endl;
+			}
+
+			std::ofstream& _File()
+			{
+				if (!m_File.is_open())
+				{
+					m_File.open(m_FilePath);
+					m_File.unsetf(std::ios::skipws);
+				}
+			}
+
+		private:
+			boost::filesystem::path m_FilePath;
+			boost::filesystem::ofstream m_File;
+			OnPathFoundSignal_t m_OnPathFoundSignal;
+			ConnectionStore_t m_ConnectionStore;
+		};
+
+	} /// end unnamed namespace
+
 	void HiLevelScannerController::_Routine()
 	{
 		SetThisThreadName("HiLevelScannerController thread");
@@ -77,7 +180,11 @@ namespace RegistryScanner {
 #endif
 				;
 
-			m_Scanner = ScannerFactory::CreateScanner(HiLevelScanner::CreationParams(currentHkey, accessMask));
+			m_Scanner = ScannerFactory::CreateScanner(
+				HiLevelScanner::CreationParams(currentHkey, accessMask
+				, std::make_unique<_ScanerObserver>(*m_Scanner, )
+				)
+			);
 
 			m_Scanner->Scan();
 
