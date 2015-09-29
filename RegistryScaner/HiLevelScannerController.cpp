@@ -10,15 +10,12 @@
 #include "HiLevelScanner.h"
 #include "DBG_SetThreadName.h"
 
-#include <iostream>
-
-#include <boost/assign/list_of.hpp>
-
 namespace RegistryScanner {
 
-	HiLevelScannerController::HiLevelScannerController(Params_t&& params, size_t chunkSize)
-		: m_HkeyStore(std::forward<Params_t>(params))
+	HiLevelScannerController::HiLevelScannerController(Descriptors_t&& params, std::ostream& os, size_t chunkSize)
+		: m_HkeyStore(std::forward<Descriptors_t>(params))
 		, m_ChunkSize(chunkSize)
+		, m_Out(os)
 	{
 	}
 
@@ -37,6 +34,23 @@ namespace RegistryScanner {
 	HiLevelScannerController::Connection_t HiLevelScannerController::AttachNextScanResultsCompleteSignal(OnNextScanResultsCompleteSignal_t::slot_type slot) {
 		return m_OnNextScanResultsCompleteSignal.connect(slot);
 	}
+
+	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnPathFoundSignal(OnPathFoundSignal_t::slot_type slot) {
+		return m_Scanner->AttachOnPathFoundSignal(slot);
+	}
+
+	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnErrorFoundSignal(OnErrorFoundSignal_t::slot_type slot) {
+		return m_Scanner->AttachOnPathFoundSignal(slot);
+	}
+
+	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnOperationSuccessSignal(OnOperationSuccess_t::slot_type slot) {
+		return m_Scanner->AttachOnErrorFoundSignal(slot);
+	}
+
+	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnInformationSignal(OnInformation_t::slot_type slot) {
+		return m_Scanner->AttachOnInformationSignal(slot);
+	}
+
 
 	void HiLevelScannerController::ScanRegistryAssync() {
 		m_Worker.reset(new std::thread(&HiLevelScannerController::_Routine, this));
@@ -64,7 +78,6 @@ namespace RegistryScanner {
 				;
 
 			m_Scanner = ScannerFactory::CreateScanner(HiLevelScanner::CreationParams(currentHkey, accessMask));
-			ConnectionStore_t const connectionStore(_AttachScannerSignals());
 
 			m_Scanner->Scan();
 
@@ -104,42 +117,11 @@ namespace RegistryScanner {
 		}
 	}
 
-	HiLevelScannerController::ConnectionStore_t HiLevelScannerController::_AttachScannerSignals()
-	{
-		ConnectionStore_t connectionStore;
-
-		connectionStore.emplace_back(
-					m_Scanner->AttachOnPathFoundSignal([this](ScanInfoPtr_t scanInfo) {
-					_OnPathFound(scanInfo);
-				})
-			);
-
-		connectionStore.emplace_back(
-					m_Scanner->AttachOnErrorFoundSignal([this](LONG erroCode, std::wstring message) {
-					_OnErrorFound(erroCode, message);
-				})
-			);
-
-		connectionStore.emplace_back(
-					m_Scanner->AttachOnOperationSuccessSignal([this](std::wstring message) {
-					_OnOperationSuccess(message);
-				})
-			);
-
-		connectionStore.emplace_back(
-				m_Scanner->AttachOnInformationSignal([this](std::wstring message) {
-					_OnInformation(message);
-				})
-			);
-
-		return connectionStore;
-	}
-
 	void HiLevelScannerController::_OnPathFound(ScanInfoPtr_t scanInfo)
 	{
 		std::lock_guard<std::mutex> const lock(m_Access);
 
-		//std::cout << "\n*** ScanInfo is received successfully.\n" << std::endl;
+		m_Out << "\n*** ScanInfo is received successfully.\n" << std::endl;
 
 		assert(scanInfo && scanInfo->handle && scanInfo->data.is_initialized() && "Bad params.");
 
@@ -161,16 +143,4 @@ namespace RegistryScanner {
 		}
 	}
 
-	void HiLevelScannerController::_OnErrorFound(LONG erroCode, std::wstring message) {
-		//std::wcout << L"\n*** Error found. Reason: " << message << L'\n' << std::endl;
-	}
-
-	void HiLevelScannerController::_OnOperationSuccess(std::wstring message) {
-		//std::wcout << L"\n*** Operation success. Info: " << message << L'\n' << std::endl;
-	}
-
-	void HiLevelScannerController::_OnInformation(std::wstring message) {
-		//std::wcout << L"\n*** Information: " << message << L'\n' << std::endl;
-	}
-	
 } /// end namespace RegistryScanner

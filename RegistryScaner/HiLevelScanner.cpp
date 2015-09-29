@@ -7,9 +7,7 @@
 #include "stdafx.h"
 #include "HiLevelScanner.h"
 #include "SystemError.h"
-
-#include <locale>
-#include <codecvt>
+#include "StringCnv.h"
 
 #include <boost/scope_exit.hpp>
 #include <boost/format.hpp>
@@ -69,16 +67,7 @@ namespace RegistryScanner {
 		private:
 			DWORD m_ValueHolder;
 		};
-
-		std::wstring _a2w(std::string const& str) 
-		{
-			try {
-				return std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>().from_bytes(str);
-			} catch (...) {
-				return L"*** Failed to call _a2w";
-			}
-		}
-
+		
 	} /// end unnamed namespace
 
 	void HiLevelScanner::_ScanRoutine(HKEY parent, std::wstring const& name) const
@@ -158,19 +147,19 @@ namespace RegistryScanner {
 				{
 					m_OnErrorFoundSignal(err.GetErrorCode()
 						, boost::str(boost::wformat(L"Failed to get value info: %1% for handle: %2%. Reason: %3% This iteration aborted.") 
-						% i % handle % _a2w(err.what()))
+						% i % handle % Details::StringCnv::a2w(err.what()))
 					);
 				} 
 				catch (IrregularValue const& err)
 				{
 					m_OnErrorFoundSignal(-1, boost::str(boost::wformat(L"Failed to get value info: %1% for handle: %2%. Reason: %3% This iteration aborted.") 
-						% i % handle % _a2w(err.what()))
+						% i % handle % Details::StringCnv::a2w(err.what()))
 					);
 				} 
 				catch (std::exception const& err) 
 				{
 					m_OnErrorFoundSignal(-1, boost::str(boost::wformat(L"Failed to get value info: %1% for handle: %2%. Reason: %3% This iteration aborted.")
-						% i % handle % _a2w(err.what()))
+						% i % handle % Details::StringCnv::a2w(err.what()))
 					);
 				}
 			}

@@ -7,7 +7,9 @@
 #pragma once
 
 #include <windows.h>
+
 #include <string>
+#include <type_traits>
 
 namespace RegistryScanner { namespace Details {
 
@@ -27,6 +29,22 @@ namespace RegistryScanner { namespace Details {
 
 		String_t ToString() const {
 			return String_t(data, size);
+		}
+		
+		template<typename Size_t>
+		typename std::enable_if<
+			std::is_integral<Size_t>::value
+			, Size_t
+		>::type const* GetSizePtr() const {
+			return reinterpret_cast<Size_t const*>(&size);
+		}
+
+		template<typename Size_t>
+		typename std::enable_if<
+			std::is_integral<Size_t>::value
+			, Size_t
+		>::type* GetSizePtr() {
+			return reinterpret_cast<Size_t*>(&size);
 		}
 
 	public:

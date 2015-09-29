@@ -10,16 +10,18 @@
 
 #include <thread>
 #include <mutex>
+#include <ostream>
 
 namespace RegistryScanner {
 
 	class HiLevelScannerController
+		: public IScanerDispatcher
 	{
 	public:
 		typedef boost::signals2::scoped_connection ScopedConnection_t;
 		typedef std::vector<ScopedConnection_t> ConnectionStore_t;
 
-		typedef std::vector<HKEY> Params_t;
+		typedef std::vector<HKEY> Descriptors_t;
 
 		typedef std::shared_ptr<ScanInfoStore_t> ScanInfoStorePtr_t;
 
@@ -27,14 +29,19 @@ namespace RegistryScanner {
 		typedef boost::signals2::signal<void(bool aborted)> OnScanEndSignal_t;
 		typedef boost::signals2::signal<void(ScanInfoStorePtr_t store)> OnNextScanResultsCompleteSignal_t;
 		typedef boost::signals2::connection Connection_t;
-		
+	
 	public:
-		HiLevelScannerController(Params_t&& params, size_t chunkSize = 15);
+		HiLevelScannerController(Descriptors_t&& params, std::ostream& os, size_t chunkSize = 15);
 		~HiLevelScannerController();
 
 		Connection_t AttachOnScanStartSignal(OnScanStartSignal_t::slot_type slot);
 		Connection_t AttachOnScanEndSignal(OnScanEndSignal_t::slot_type slot);
 		Connection_t AttachNextScanResultsCompleteSignal(OnNextScanResultsCompleteSignal_t::slot_type slot);
+
+		virtual Connection_t AttachOnPathFoundSignal(OnPathFoundSignal_t::slot_type slot) override;
+		virtual Connection_t AttachOnErrorFoundSignal(OnErrorFoundSignal_t::slot_type slot) override;
+		virtual Connection_t AttachOnOperationSuccessSignal(OnOperationSuccess_t::slot_type slot) override;
+		virtual Connection_t AttachOnInformationSignal(OnInformation_t::slot_type slot) override;
 
 		void ScanRegistryAssync();
 		void StopScan();
@@ -42,16 +49,11 @@ namespace RegistryScanner {
 	private:
 		void _Routine();
 		void _StopScan(bool aborted, bool needSignal);
-
-		ConnectionStore_t _AttachScannerSignals();
-
 		void _OnPathFound(ScanInfoPtr_t scanInfo);
-		void _OnErrorFound(LONG erroCode, std::wstring message);
-		void _OnOperationSuccess(std::wstring message);
-		void _OnInformation(std::wstring message);
 
 	private:
-		Params_t m_HkeyStore;
+		Descriptors_t m_HkeyStore;
+		std::ostream& m_Out;
 		size_t const m_ChunkSize;
 		ScanInfoStorePtr_t m_ScanInfoStore;
 

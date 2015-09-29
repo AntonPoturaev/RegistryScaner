@@ -34,7 +34,7 @@ namespace RegistryScanner {
 	{
 		assert(handle != nullptr && "Bad params.");
 		return ::RegQueryInfoKey(handle
-			, keyInfo.classNameBuffer.data, &keyInfo.classNameBuffer.size
+			, keyInfo.classNameBuffer.data, keyInfo.classNameBuffer.GetSizePtr<DWORD>()
 			, nullptr /// reserved
 			, &keyInfo.subKeysCount, &keyInfo.subKeyLongset, &keyInfo.classNameLongset
 			, &keyInfo.valuesForKeyCount, &keyInfo.valueNameLongset, &keyInfo.valueDataLongset
@@ -47,7 +47,7 @@ namespace RegistryScanner {
 
 		Details::WideStaticBuffer<KeyInfo::maxKeyLength> keyNameBuffer(KeyInfo::maxKeyLength);
 
-		LONG const result = ::RegEnumKeyEx(handle, index, keyNameBuffer.data, &keyNameBuffer.size
+		LONG const result = ::RegEnumKeyEx(handle, index, keyNameBuffer.data, keyNameBuffer.GetSizePtr<DWORD>()
 			, nullptr /// reserved
 			, nullptr, nullptr, nullptr);
 
@@ -65,7 +65,7 @@ namespace RegistryScanner {
 		DWORD dataSize = 0;
 		DWORD type = -1;
 
-		LONG result = ::RegEnumValue(handle, index, valueNameBuffer.data, &valueNameBuffer.size
+		LONG result = ::RegEnumValue(handle, index, valueNameBuffer.data, valueNameBuffer.GetSizePtr<DWORD>()
 			, nullptr/// reserved 
 			, &type, nullptr, &dataSize);
 

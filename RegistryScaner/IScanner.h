@@ -17,9 +17,9 @@
 namespace RegistryScanner {
 
 	/*
-		@struct IScannerObserver - предаставляет интерфейс для наблюдения за процессом сканирования
+		@struct IScanerDispatcher - предаставляет интерфейс для наблюдения за процессом сканирования
 	*/
-	struct IScannerObserver
+	struct IScanerDispatcher
 	{
 	public:
 		typedef boost::signals2::signal<void(ScanInfoPtr_t scanInfo)> OnPathFoundSignal_t;
@@ -34,12 +34,12 @@ namespace RegistryScanner {
 		virtual Connection_t AttachOnOperationSuccessSignal(OnOperationSuccess_t::slot_type slot) = 0;
 		virtual Connection_t AttachOnInformationSignal(OnInformation_t::slot_type slot) = 0;
 	};
-
+	
 	/*
 		@struct IScanner - интерфейс сканера реестра
 	*/
 	struct IScanner 
-		: public IScannerObserver
+		: public IScanerDispatcher
 	{
 		virtual void Scan() const = 0;
 	};

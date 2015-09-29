@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "Handle2Path.h"
 #include "SimpleSingletonTpl.h"
-#include "ntdll_module.h"
+#include "ntdll.h"
 
 namespace RegistryScanner { namespace Details {
 

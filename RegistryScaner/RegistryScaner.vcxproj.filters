@@ -73,6 +73,9 @@
     <ClInclude Include="ntdll.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
+    <ClInclude Include="StringCnv.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -116,6 +119,9 @@
       <Filter>RegestryScaner</Filter>
     </ClCompile>
     <ClCompile Include="ntdll.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="StringCnv.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
   </ItemGroup>
