@@ -5,14 +5,14 @@
 */
 
 #include "stdafx.h"
-#include "ntdll_module.h"
+#include "ntdll.h"
 
 #include <memory>
 
 namespace RegistryScanner { namespace Details {
 
 	NtDll::NtDll()
-		: DllModule(L"ntdll.dll")
+		: Dll(L"ntdll.dll")
 		, m_NtQueryKeyProc(nullptr)
 	{
 	}

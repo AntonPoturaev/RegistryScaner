@@ -14,6 +14,9 @@
 
 namespace RegistryScanner {
 
+	/*
+		@class HiLevelScanner - реализует сканер реестра (верхний, 3-й уровень ОС)
+	*/
 	class HiLevelScanner 
 		: public IScanner
 	{

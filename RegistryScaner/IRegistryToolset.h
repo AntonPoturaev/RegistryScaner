@@ -11,6 +11,9 @@
 
 namespace RegistryScanner {
 
+	/*
+		@struct IRegistryToolset - предаставляет инструментарий для работы с реестром
+	*/
 	struct IRegistryToolset
 	{
 		virtual LONG OpenKey(HKEY handle, std::wstring const& subkeyName, DWORD accessMask, PHKEY outHandle) const = 0;

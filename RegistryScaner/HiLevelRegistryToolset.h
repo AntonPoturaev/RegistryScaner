@@ -10,6 +10,9 @@
 
 namespace RegistryScanner {
 
+	/*
+	@class HiLevelRegistryToolset  - реализует инструментарий для работы с реестром, использует WinAPI
+	*/
 	class HiLevelRegistryToolset 
 		: public RegistryToolsetBase
 	{

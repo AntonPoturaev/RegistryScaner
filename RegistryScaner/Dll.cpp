@@ -5,11 +5,11 @@
 */
 
 #include "StdAfx.h"
-#include "DllModule.h"
+#include "Dll.h"
 
 namespace RegistryScanner { namespace Details {
 
-	DllModule::DllModule(String const& libName, DWORD flags)
+	Dll::Dll(String const& libName, DWORD flags)
 		: m_LibName(_T(""))
 		, m_Flags(0)
 		, m_Handle(nullptr)
@@ -17,11 +17,11 @@ namespace RegistryScanner { namespace Details {
 		Load(libName, flags);
 	}
 	
-	DllModule::~DllModule() {
+	Dll::~Dll() {
 		Free();
 	}
 	
-	DllModule::DllModule(DllModule const& obj)
+	Dll::Dll(Dll const& obj)
 		: m_LibName(_T(""))
 		, m_Flags(0)
 		, m_Handle(nullptr)
@@ -29,7 +29,7 @@ namespace RegistryScanner { namespace Details {
 		Load(obj.m_LibName, obj.m_Flags);
 	}
 	
-	DllModule &DllModule::operator=(DllModule const& obj)
+	Dll &Dll::operator=(Dll const& obj)
 	{
 		if (this != &obj)
 			Load(obj.m_LibName, obj.m_Flags);
@@ -37,7 +37,7 @@ namespace RegistryScanner { namespace Details {
 		return *this;
 	}
 	
-	bool DllModule::Load(String const& libName, DWORD flags)
+	bool Dll::Load(String const& libName, DWORD flags)
 	{
 		Free();
 
@@ -57,7 +57,7 @@ namespace RegistryScanner { namespace Details {
 		return false;
 	}
 	
-	void DllModule::Free()
+	void Dll::Free()
 	{
 		if (IsLoad())
 		{
@@ -66,7 +66,7 @@ namespace RegistryScanner { namespace Details {
 		}
 	}
 	
-	bool DllModule::IsLoad() const {
+	bool Dll::IsLoad() const {
 		return m_Handle != nullptr;
 	}
 

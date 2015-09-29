@@ -12,6 +12,9 @@
 
 namespace RegistryScanner {
 
+	/*
+		@struct ValueInfo - 
+	*/
 	struct ValueInfo
 	{
 		std::wstring name;

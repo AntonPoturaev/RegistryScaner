@@ -16,6 +16,9 @@
 
 namespace RegistryScanner {
 
+	/*
+		@struct IScannerObserver - предаставляет интерфейс для наблюдения за процессом сканирования
+	*/
 	struct IScannerObserver
 	{
 	public:
@@ -32,6 +35,9 @@ namespace RegistryScanner {
 		virtual Connection_t AttachOnInformationSignal(OnInformation_t::slot_type slot) = 0;
 	};
 
+	/*
+		@struct IScanner - интерфейс сканера реестра
+	*/
 	struct IScanner 
 		: public IScannerObserver
 	{

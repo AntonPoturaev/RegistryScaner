@@ -14,6 +14,10 @@
 #include <boost/variant.hpp>
 #include <boost/shared_array.hpp>
 
+/*
+	¬ этом файле определ€ютс€ типы данных хранимые в реестре и вспомогательные методы дл€ работы с ними
+*/
+
 namespace RegistryScanner {
 
 	enum class ValueType

@@ -12,17 +12,17 @@
 
 namespace RegistryScanner { namespace Details {
 
-	class DllModule
+	class Dll
 	{
 	public:
 		typedef std::basic_string<TCHAR> String;
 
 	public:
-		explicit DllModule(String const& libName, DWORD flags = 0);
-		virtual ~DllModule();
+		explicit Dll(String const& libName, DWORD flags = 0);
+		virtual ~Dll();
 
-		DllModule(DllModule const&);
-		DllModule& operator= (DllModule const&);
+		Dll(Dll const&);
+		Dll& operator= (Dll const&);
 
 		bool Load(String const& libName, DWORD flags = 0);
 		void Free();

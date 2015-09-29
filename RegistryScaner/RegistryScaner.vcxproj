@@ -75,7 +75,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DBG_SetThreadName.h" />
-    <ClInclude Include="DllModule.h" />
+    <ClInclude Include="Dll.h" />
     <ClInclude Include="Handle2Path.h" />
     <ClInclude Include="HiLevelRegistryToolset.h" />
     <ClInclude Include="HiLevelScanner.h" />
@@ -83,7 +83,7 @@
     <ClInclude Include="HiLevelScannerUseCase1.h" />
     <ClInclude Include="IRegistryToolset.h" />
     <ClInclude Include="IScanner.h" />
-    <ClInclude Include="ntdll_module.h" />
+    <ClInclude Include="ntdll.h" />
     <ClInclude Include="RegistryToolsetBase.h" />
     <ClInclude Include="KeyInfo.h" />
     <ClInclude Include="ScannerFactory.h" />
@@ -98,14 +98,14 @@
     <ClInclude Include="WideStaticBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DllModule.cpp" />
+    <ClCompile Include="Dll.cpp" />
     <ClCompile Include="Handle2Path.cpp" />
     <ClCompile Include="HiLevelRegistryToolset.cpp" />
     <ClCompile Include="HiLevelScanner.cpp" />
     <ClCompile Include="HiLevelScannerController.cpp" />
     <ClCompile Include="HiLevelScannerUseCase1.cpp" />
     <ClCompile Include="KeyInfo.cpp" />
-    <ClCompile Include="ntdll_module.cpp" />
+    <ClCompile Include="ntdll.cpp" />
     <ClCompile Include="RegistryScanerMain.cpp" />
     <ClCompile Include="RegistryToolsetBase.cpp" />
     <ClCompile Include="ScanInfo.cpp" />

@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "DllModule.h"
+#include "Dll.h"
 
 namespace RegistryScanner { namespace Details {
 
 	class NtDll 
-		: public DllModule
+		: public Dll
 	{
 		typedef DWORD(__stdcall *NtQueryKeyProc_t)(
 			HANDLE  keyHandle, int keyInformationClass, PVOID keyInformation, ULONG length, PULONG resultLength);
