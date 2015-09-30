@@ -55,6 +55,12 @@
     <ClInclude Include="DBG_SetThreadName.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
+    <ClInclude Include="DllModule.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="ntdll_module.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
     <ClInclude Include="Handle2Path.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
@@ -65,12 +71,6 @@
       <Filter>RegestryScaner</Filter>
     </ClInclude>
     <ClInclude Include="StaticBuffer.h">
-      <Filter>RegestryScaner</Filter>
-    </ClInclude>
-    <ClInclude Include="Dll.h">
-      <Filter>RegestryScaner</Filter>
-    </ClInclude>
-    <ClInclude Include="ntdll.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
     <ClInclude Include="StringCnv.h">
@@ -100,6 +100,12 @@
     <ClCompile Include="HiLevelScannerController.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
+    <ClCompile Include="DllModule.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="ntdll_module.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
     <ClCompile Include="Handle2Path.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
@@ -113,12 +119,6 @@
       <Filter>RegestryScaner</Filter>
     </ClCompile>
     <ClCompile Include="HiLevelScannerUseCase1.cpp">
-      <Filter>RegestryScaner</Filter>
-    </ClCompile>
-    <ClCompile Include="Dll.cpp">
-      <Filter>RegestryScaner</Filter>
-    </ClCompile>
-    <ClCompile Include="ntdll.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
     <ClCompile Include="StringCnv.cpp">

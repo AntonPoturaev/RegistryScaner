@@ -9,6 +9,8 @@
 #include "ScannerFactory.h"
 #include "HiLevelScanner.h"
 #include "DBG_SetThreadName.h"
+#include "Handle2Path.h"
+#innclude "StringCnv.h"
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -69,12 +71,11 @@ namespace RegistryScanner {
 
 	namespace {
 
-		std::string _GenControllerFileName() {
-			return boost::str(boost::format("HiLevelScannerController_%1%_%2%.log") % ::GetCurrentProcessId() % boost::lexical_cast<std::string>(boost::posix_time::second_clock::universal_time()));
+		std::string _GenScannerFileName(HKEY root) {
+			return boost::str(boost::format("HiLevelScanner_%1%_%2%_%3%.log") % Details::StringCnv::w2a(Details::Handle2Path(root)) % ::GetCurrentProcessId() % boost::lexical_cast<std::string>(boost::posix_time::second_clock::universal_time()));
 		}
 
-		class _ScanerObserver
-			: public HiLevelScanner::_ScanerObserver
+		class _ScannerObserver
 		{
 		public:
 			typedef HiLevelScannerController::ConnectionStore_t ConnectionStore_t;
@@ -82,14 +83,14 @@ namespace RegistryScanner {
 			typedef IScanerDispatcher::OnPathFoundSignal_t OnPathFoundSignal_t;
 
 		public:
-			_ScanerObserver(IScanerDispatcher& disp, OnPathFoundSignal_t::slot_type&& slot, boost::filesystem::path&& filePath)
+			_ScannerObserver(IScanerDispatcher& disp, OnPathFoundSignal_t::slot_type&& slot, boost::filesystem::path&& filePath)
 				: m_FilePath(std::forward<boost::filesystem::path>(filePath))
 				, m_ConnectionStore(_Build(disp, std::forward<OnPathFoundSignal_t::slot_type>(slot)))
 			{
 				assert(!m_FilePath.empty());
 			}
 
-			virtual ~_ScanerObserver() override
+			~_ScannerObserver()
 			{
 				if (m_File.is_open())
 				{
@@ -180,13 +181,16 @@ namespace RegistryScanner {
 #endif
 				;
 
-			m_Scanner = ScannerFactory::CreateScanner(
-				HiLevelScanner::CreationParams(currentHkey, accessMask
-				, std::make_unique<_ScanerObserver>(*m_Scanner, )
-				)
-			);
+			m_Scanner = ScannerFactory::CreateScanner(HiLevelScanner::CreationParams(currentHkey, accessMask));
 
-			m_Scanner->Scan();
+			{
+				_ScanerObserver const observeer(*m_Scanner
+					, boost::bind(&HiLevelScannerController::_OnPathFound, this, _1)
+					, _GenScannerFileName(currentHkey)
+				);
+
+				m_Scanner->Scan();
+			}
 
 			m_Scanner.reset();
 		}

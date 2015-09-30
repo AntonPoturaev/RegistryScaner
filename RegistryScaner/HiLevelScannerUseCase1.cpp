@@ -30,9 +30,7 @@ namespace RegistryScanner {
 	
 	
 	namespace UseCase {
-
-
-
+		
 	int HiLevelScannerUseCase1::Run()
 	{
 		HiLevelScannerUseCase1 self;
@@ -114,7 +112,7 @@ namespace RegistryScanner {
 						for (auto currentScanInfo : *store)
 							infoStr += ToWideString(*currentScanInfo) + L'\n';
 						
-						std::wcout << infoStr << std::endl;
+						_File() << Details::StringCnv::w2a(infoStr) << std::endl;
 					}
 					catch (...) {}
 					break;
@@ -176,6 +174,15 @@ namespace RegistryScanner {
 		m_Queue.push_back(store);
 
 		m_Condition.notify_one();
+	}
+
+	std::ofstream& HiLevelScannerUseCase1::_File()
+	{
+		if (!m_File.is_open())
+		{
+			m_File.open(m_FilePath);
+			m_File.unsetf(std::ios::skipws);
+		}
 	}
 				
 }} /// end namespace RegistryScanner::UseCase

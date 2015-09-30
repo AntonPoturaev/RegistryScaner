@@ -14,10 +14,9 @@
 
 namespace RegistryScanner {
 
-	HiLevelScanner::CreationParams::CreationParams(HKEY rootHandle_, DWORD accessMask_, _ScanerObserverPtr_t&& observer_)
+	HiLevelScanner::CreationParams::CreationParams(HKEY rootHandle_, DWORD accessMask_)
 		: rootHandle(rootHandle_)
 		, accessMask(accessMask_)
-		, observer(std::forward<_ScanerObserverPtr_t>(observer_))
 	{
 	}
 

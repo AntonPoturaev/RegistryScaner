@@ -25,19 +25,12 @@ namespace RegistryScanner {
 		friend struct ScannerFactory;
 
 	public:
-		struct _ScanerObserver {
-			virtual ~_ScanerObserver() = 0;
-		};
-
-		typedef std::unique_ptr<_ScanerObserver> _ScanerObserverPtr_t;
-
 		struct CreationParams
 		{
-			CreationParams(HKEY rootHandle_, DWORD accessMask_, _ScanerObserverPtr_t&& observer_);
+			CreationParams(HKEY rootHandle_, DWORD accessMask_);
 
 			HKEY rootHandle;
 			DWORD accessMask;
-			_ScanerObserverPtr_t observer;
 		};
 
 	public:
