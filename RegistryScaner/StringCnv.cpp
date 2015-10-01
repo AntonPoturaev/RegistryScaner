@@ -31,7 +31,7 @@ namespace RegistryScanner { namespace Details {
 		try {
 			return std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(str);
 		} catch (...) {
-			return L"*** Failed to call w2a";
+			return "*** Failed to call w2a";
 		}
 	}
 

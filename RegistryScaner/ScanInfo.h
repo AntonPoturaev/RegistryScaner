@@ -37,4 +37,7 @@ namespace RegistryScanner {
 	std::wstring ToWideString(ScanInfo::Data_t const& infoData);
 	std::wstring ToWideString(ScanInfo const& info);
 
+	std::string ToString(ScanInfo::Data_t const& infoData);
+	std::string ToString(ScanInfo const& info);
+
 } /// end namespace RegistryScanner

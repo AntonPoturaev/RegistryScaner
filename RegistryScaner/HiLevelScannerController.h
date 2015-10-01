@@ -31,8 +31,10 @@ namespace RegistryScanner {
 		typedef boost::signals2::connection Connection_t;
 	
 	public:
-		HiLevelScannerController(Descriptors_t&& params, std::ostream& os, size_t chunkSize = 15);
+		HiLevelScannerController(Descriptors_t&& params, size_t chunkSize = 15);
 		~HiLevelScannerController();
+
+		void SetOutput(std::ostream& os);
 
 		Connection_t AttachOnScanStartSignal(OnScanStartSignal_t::slot_type slot);
 		Connection_t AttachOnScanEndSignal(OnScanEndSignal_t::slot_type slot);
@@ -48,13 +50,15 @@ namespace RegistryScanner {
 		
 	private:
 		void _Routine();
+		void _DoScan(HKEY hkey);
+		void _PostScan();
 		void _StopScan(bool aborted, bool needSignal);
 		void _OnPathFound(ScanInfoPtr_t scanInfo);
 
 	private:
 		Descriptors_t m_HkeyStore;
-		std::ostream& m_Out;
 		size_t const m_ChunkSize;
+		std::ostream* m_Out;
 		ScanInfoStorePtr_t m_ScanInfoStore;
 
 		OnScanStartSignal_t m_OnScanStartSignal;

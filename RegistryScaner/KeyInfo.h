@@ -33,5 +33,6 @@ namespace RegistryScanner {
 	};
 
 	std::wstring ToWideString(KeyInfo const& info);
+	std::string ToString(KeyInfo const& info);
 
 } /// end namespace RegistryScanner

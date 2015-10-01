@@ -143,5 +143,6 @@ namespace RegistryScanner {
 	};
 
 	std::wstring Value2WideString(Value_t const& value);
+	std::string Value2String(Value_t const& value);
 	
 } /// end namespace RegistryScanner 

@@ -7,29 +7,24 @@
 #include "stdafx.h"
 #include "HiLevelScannerUseCase1.h"
 #include "StringCnv.h"
+#include "FileHelpers.h"
+#include "TimeStamp.h"
 
 #include <cassert>
 #include <iostream>
-#include <fstream>
+#include <condition_variable>
 
 #include <boost/assign/list_of.hpp>
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
-#include <boost/date_time/posix_time/posix_time_io.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/lexical_cast.hpp>
 
-namespace RegistryScanner { 
-	
+namespace RegistryScanner { namespace UseCase {
+
 	namespace {
-		std::string _GenControllerFileName() {
-			return boost::str(boost::format("HiLevelScannerController_%1%_%2%.log") % ::GetCurrentProcessId() % boost::lexical_cast<std::string>(boost::posix_time::second_clock::universal_time()));
+		boost::filesystem::path _GenUseCaseFileName() {
+			return boost::str(boost::format("HiLevelScannerUseCase1_%1%_%2%.log") % ::GetCurrentProcessId() % Details::TimeStamp());
 		}
-	} /// end unnamed namespace 
-
-	
-	
-	namespace UseCase {
+	} /// end unnamed namespace
 		
 	int HiLevelScannerUseCase1::Run()
 	{
@@ -41,13 +36,15 @@ namespace RegistryScanner {
 		: m_Controller(
 			boost::assign::list_of
 				(HKEY_CURRENT_USER)
-				(HKEY_LOCAL_MACHINE)
+				/*(HKEY_LOCAL_MACHINE) /// раскоментировать для тестов ;)
 				(HKEY_USERS)
 				(HKEY_CLASSES_ROOT)
-				(HKEY_CURRENT_CONFIG) /// этого хватит чтобы посмотреть на принцип работы... но все ветки лучше не перебирать - консоль загнётся! если перебирать всё то надо в файл или на форму выводить!
-			, 5 /// это кол-во записей показываемых на экран за 1 раз
+				(HKEY_CURRENT_CONFIG)*/ /// этого хватит чтобы посмотреть на принцип работы... но все ветки лучше не перебирать - консоль загнётся! если перебирать всё то надо в файл или на форму выводить!
+			, 100 /// это кол-во записей показываемых на экран за 1 раз
 		)
 		, m_Stoped(false)
+		, m_Started(false)
+		, m_FilePath(_GenUseCaseFileName())
 	{
 		m_ConnectionStore.emplace_back(m_Controller.AttachOnScanStartSignal(boost::bind(&HiLevelScannerUseCase1::_OnScanStart, this)));
 		m_ConnectionStore.emplace_back(m_Controller.AttachOnScanEndSignal(boost::bind(&HiLevelScannerUseCase1::_OnScanEnd, this, _1)));
@@ -57,83 +54,23 @@ namespace RegistryScanner {
 	int HiLevelScannerUseCase1::_Run()
 	{
 		m_Controller.ScanRegistryAssync();
-
-		while (m_Queue.empty())
+		
+		while (!m_Started)
 		{
 			std::unique_lock<std::mutex> lock(m_Access);
 			m_Condition.wait(lock);
 		}
 
-		volatile bool waitForStop(false);
-		while (!m_Queue.empty())
+		while (!m_Stoped)
 		{
-			if (waitForStop)
-			{
-				std::cout << "Wait for stop scanner thread." << std::endl;
+			std::cout << "\nScanning in process... patience" << std::endl;
 
-				std::unique_lock<std::mutex> lock(m_Access);
-				while (!m_Stoped)
-					m_Condition.wait(lock);
+			static std::chrono::seconds const g_TimeOut(3);
 
-				std::cout << "\n *** End *** \n" << std::endl;
-
-				break;
-			}
-			else if (m_Stoped && m_StopLasyReporter)
-			{
-				m_StopLasyReporter();
-				m_StopLasyReporter = StopLasyReporter_t();
-			}
-			else
-			{
-				std::cout << "Show next results set? y/n" << std::endl;
-
-				char answer = 0;
-				std::cin >> answer;
-				std::cin.get();
-
-				switch (answer)
-				{
-				case 'y':
-				{
-					HiLevelScannerController::ScanInfoStorePtr_t store;
-					{
-						std::unique_lock<std::mutex> const lock(m_Access);
-
-						store = m_Queue.front();
-						m_Queue.pop_front();
-					}
-
-					assert(store && "Bad data!");
-
-					try
-					{							
-						std::wstring infoStr;
-						for (auto currentScanInfo : *store)
-							infoStr += ToWideString(*currentScanInfo) + L'\n';
-						
-						_File() << Details::StringCnv::w2a(infoStr) << std::endl;
-					}
-					catch (...) {}
-					break;
-				}
-				case'n':
-				{
-					assert(waitForStop == false && "Bad logic!");
-					if (!waitForStop)
-					{
-						waitForStop = true;
-						m_Controller.StopScan();
-					}
-					break;
-				}
-				default:
-					std::cerr << "Bad input!\n";
-					break;
-				}
-			}
+			std::unique_lock<std::mutex> lock(m_Access);
+			m_Condition.wait_for(lock, g_TimeOut);
 		}
-
+		
 		std::cout << "*** END OF USE CASE ***" << std::endl;
 
 		::getchar();
@@ -145,6 +82,10 @@ namespace RegistryScanner {
 	{
 		std::cout << "HiLevelScannerUseCase1 is started." << std::endl;
 		std::cout << "Wait for first results..." << std::endl;
+
+		m_Started = true;
+
+		m_Condition.notify_one();
 	}
 
 	void HiLevelScannerUseCase1::_OnScanEnd(bool aborted)
@@ -157,13 +98,13 @@ namespace RegistryScanner {
 			std::cout << boost::str(boost::format("HiLevelScannerUseCase1 is %1%.") % (aborted ? "aborted" : "complete")) << std::endl;
 		};
 
+		Details::FileHelpers::CloseFile(m_File);
+
 		m_Condition.notify_one();
 	}
 
 	void HiLevelScannerUseCase1::_OnNextScanResultsComplete(HiLevelScannerController::ScanInfoStorePtr_t store)
 	{
-		std::unique_lock<std::mutex> const lock(m_Access);
-
 		assert(store && !store->empty() && "Bad params.");
 
 #if defined(_DEBUG)
@@ -171,18 +112,19 @@ namespace RegistryScanner {
 			assert(store->at(i) && store->at(i)->data.is_initialized());
 #endif /// _DEBUG
 
-		m_Queue.push_back(store);
+		try
+		{
+			std::string infoStr;
+			for (auto currentScanInfo : *store)
+				infoStr += ToString(*currentScanInfo) + '\n';
 
-		m_Condition.notify_one();
+			_File().rdbuf()->sputn(infoStr.data(), infoStr.size());
+		}
+		catch (...) {}
 	}
 
-	std::ofstream& HiLevelScannerUseCase1::_File()
-	{
-		if (!m_File.is_open())
-		{
-			m_File.open(m_FilePath);
-			m_File.unsetf(std::ios::skipws);
-		}
+	std::ofstream& HiLevelScannerUseCase1::_File() {
+		return Details::FileHelpers::LazyFile(m_File, m_FilePath);
 	}
 				
 }} /// end namespace RegistryScanner::UseCase

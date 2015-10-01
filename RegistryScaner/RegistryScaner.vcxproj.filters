@@ -55,12 +55,6 @@
     <ClInclude Include="DBG_SetThreadName.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
-    <ClInclude Include="DllModule.h">
-      <Filter>RegestryScaner</Filter>
-    </ClInclude>
-    <ClInclude Include="ntdll_module.h">
-      <Filter>RegestryScaner</Filter>
-    </ClInclude>
     <ClInclude Include="Handle2Path.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
@@ -74,6 +68,18 @@
       <Filter>RegestryScaner</Filter>
     </ClInclude>
     <ClInclude Include="StringCnv.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="Dll.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="ntdll.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHelpers.h">
+      <Filter>RegestryScaner</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeStamp.h">
       <Filter>RegestryScaner</Filter>
     </ClInclude>
   </ItemGroup>
@@ -100,12 +106,6 @@
     <ClCompile Include="HiLevelScannerController.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
-    <ClCompile Include="DllModule.cpp">
-      <Filter>RegestryScaner</Filter>
-    </ClCompile>
-    <ClCompile Include="ntdll_module.cpp">
-      <Filter>RegestryScaner</Filter>
-    </ClCompile>
     <ClCompile Include="Handle2Path.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
@@ -122,6 +122,18 @@
       <Filter>RegestryScaner</Filter>
     </ClCompile>
     <ClCompile Include="StringCnv.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="Dll.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="ntdll.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="FileHelpers.cpp">
+      <Filter>RegestryScaner</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeStamp.cpp">
       <Filter>RegestryScaner</Filter>
     </ClCompile>
   </ItemGroup>

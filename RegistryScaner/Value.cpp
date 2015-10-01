@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "Value.h"
 #include "SystemError.h"
+#include "StringCnv.h"
 
 #include <cassert>
 
@@ -583,7 +584,7 @@ namespace RegistryScanner {
 				result_type result;
 
 				for (auto const& i : data)
-					result += L"{" + i + L"}";
+					result += L'{' + i + L'}';
 
 				return result;
 			}
@@ -601,10 +602,50 @@ namespace RegistryScanner {
 			}
 		};
 
+		struct _Value2StringDecoder
+			: public boost::static_visitor<std::string>
+		{
+			result_type operator()(RawByteData_t const& data) const
+			{
+				result_type result(data.begin(), data.end());
+				return '[' + result + ']';
+			}
+
+			result_type operator()(String_t const& data) const {
+				return Details::StringCnv::w2a(data);
+			}
+
+			result_type operator()(MultiString_t const& data) const
+			{
+				result_type result;
+
+				for (auto const& i : data)
+					result += '{' + Details::StringCnv::w2a(i) + '}';
+
+				return result;
+			}
+
+			result_type operator()(ExpandString const& data) const {
+				return operator()(data.GetValue());
+			}
+
+			result_type operator()(Dword_t const& data) const {
+				return std::to_string(data);
+			}
+
+			result_type operator()(Qword_t const& data) const {
+				return std::to_string(data.qword);
+			}
+		};
+
 	} /// end unnamed namespace 
 
 	std::wstring Value2WideString(Value_t const& value) {
 		return boost::apply_visitor(_Value2WideStringDecoder(), value);
+	}
+
+	std::string Value2String(Value_t const& value) {
+		return boost::apply_visitor(_Value2StringDecoder(), value);
 	}
 
 } /// end namespace RegistryScanner

@@ -10,26 +10,29 @@
 #include "HiLevelScanner.h"
 #include "DBG_SetThreadName.h"
 #include "Handle2Path.h"
-#innclude "StringCnv.h"
+#include "StringCnv.h"
+#include "FileHelpers.h"
+#include "TimeStamp.h"
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/format.hpp>
-#include <boost/date_time/posix_time/posix_time_io.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/lexical_cast.hpp>
 
 namespace RegistryScanner {
 
-	HiLevelScannerController::HiLevelScannerController(Descriptors_t&& params, std::ostream& os, size_t chunkSize)
+	HiLevelScannerController::HiLevelScannerController(Descriptors_t&& params, size_t chunkSize)
 		: m_HkeyStore(std::forward<Descriptors_t>(params))
 		, m_ChunkSize(chunkSize)
-		, m_Out(os)
+		, m_Out(nullptr)
 	{
 	}
 
 	HiLevelScannerController::~HiLevelScannerController() {
 		_StopScan(true, false);
+	}
+
+	void HiLevelScannerController::SetOutput(std::ostream& os) {
+		m_Out = std::addressof(os);
 	}
 
 	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnScanStartSignal(OnScanStartSignal_t::slot_type slot) {
@@ -49,11 +52,11 @@ namespace RegistryScanner {
 	}
 
 	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnErrorFoundSignal(OnErrorFoundSignal_t::slot_type slot) {
-		return m_Scanner->AttachOnPathFoundSignal(slot);
+		return m_Scanner->AttachOnErrorFoundSignal(slot);
 	}
 
 	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnOperationSuccessSignal(OnOperationSuccess_t::slot_type slot) {
-		return m_Scanner->AttachOnErrorFoundSignal(slot);
+		return m_Scanner->AttachOnOperationSuccessSignal(slot);
 	}
 
 	HiLevelScannerController::Connection_t HiLevelScannerController::AttachOnInformationSignal(OnInformation_t::slot_type slot) {
@@ -71,8 +74,12 @@ namespace RegistryScanner {
 
 	namespace {
 
-		std::string _GenScannerFileName(HKEY root) {
-			return boost::str(boost::format("HiLevelScanner_%1%_%2%_%3%.log") % Details::StringCnv::w2a(Details::Handle2Path(root)) % ::GetCurrentProcessId() % boost::lexical_cast<std::string>(boost::posix_time::second_clock::universal_time()));
+		boost::filesystem::path _GenScannerFileName(HKEY root) {
+			return boost::str(boost::format("HiLevelScanner_%1%_%2%_%3%.log")
+				% Details::StringCnv::w2a(Details::Handle2Path(root))
+				% ::GetCurrentProcessId()
+				% Details::TimeStamp()
+				);
 		}
 
 		class _ScannerObserver
@@ -90,13 +97,8 @@ namespace RegistryScanner {
 				assert(!m_FilePath.empty());
 			}
 
-			~_ScannerObserver()
-			{
-				if (m_File.is_open())
-				{
-					m_File.flush();
-					m_File.close();
-				}
+			~_ScannerObserver() {
+				Details::FileHelpers::CloseFile(m_File);
 			}
 
 		private:
@@ -146,13 +148,8 @@ namespace RegistryScanner {
 				_File() << boost::str(boost::format("\n*** Information: %1% \n") % Details::StringCnv::w2a(message)) << std::endl;
 			}
 
-			std::ofstream& _File()
-			{
-				if (!m_File.is_open())
-				{
-					m_File.open(m_FilePath);
-					m_File.unsetf(std::ios::skipws);
-				}
+			std::ofstream& _File() {
+				return Details::FileHelpers::LazyFile(m_File, m_FilePath);
 			}
 
 		private:
@@ -183,32 +180,38 @@ namespace RegistryScanner {
 
 			m_Scanner = ScannerFactory::CreateScanner(HiLevelScanner::CreationParams(currentHkey, accessMask));
 
-			{
-				_ScanerObserver const observeer(*m_Scanner
-					, boost::bind(&HiLevelScannerController::_OnPathFound, this, _1)
-					, _GenScannerFileName(currentHkey)
-				);
-
-				m_Scanner->Scan();
-			}
+			_DoScan(currentHkey);
 
 			m_Scanner.reset();
 		}
 
-		{
-			std::lock_guard<std::mutex> const lock(m_Access);
-
-			if (m_ScanInfoStore && !m_ScanInfoStore->empty())
-			{
-				auto const size = m_ScanInfoStore->size();
-				assert(size <= m_ChunkSize && "Bad data. Logic error.");
-
-				m_OnNextScanResultsCompleteSignal(m_ScanInfoStore);
-				m_ScanInfoStore.reset();
-			}
-		}
-
+		_PostScan();
 		m_OnScanEndSignal(false);
+	}
+
+
+	void HiLevelScannerController::_DoScan(HKEY hkey)
+	{
+		_ScannerObserver const observeer(*m_Scanner
+			, boost::bind(&HiLevelScannerController::_OnPathFound, this, _1)
+			, _GenScannerFileName(hkey)
+			);
+
+		m_Scanner->Scan();
+	}
+
+	void HiLevelScannerController::_PostScan()
+	{
+		std::lock_guard<std::mutex> const lock(m_Access);
+
+		if (m_ScanInfoStore && !m_ScanInfoStore->empty())
+		{
+			auto const size = m_ScanInfoStore->size();
+			assert(size <= m_ChunkSize && "Bad data. Logic error.");
+
+			m_OnNextScanResultsCompleteSignal(m_ScanInfoStore);
+			m_ScanInfoStore.reset();
+		}
 	}
 
 	void HiLevelScannerController::_StopScan(bool aborted, bool needSignal)
@@ -232,7 +235,8 @@ namespace RegistryScanner {
 	{
 		std::lock_guard<std::mutex> const lock(m_Access);
 
-		m_Out << "\n*** ScanInfo is received successfully.\n" << std::endl;
+		if (m_Out)
+			*m_Out << "\n*** ScanInfo is received successfully.\n" << std::endl;
 
 		assert(scanInfo && scanInfo->handle && scanInfo->data.is_initialized() && "Bad params.");
 

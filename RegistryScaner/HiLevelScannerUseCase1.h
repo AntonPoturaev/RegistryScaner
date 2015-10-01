@@ -13,7 +13,6 @@
 #include <mutex>
 #include <condition_variable>
 #include <functional>
-#include <deque>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -42,11 +41,10 @@ namespace RegistryScanner { namespace UseCase {
 		HiLevelScannerController::ConnectionStore_t m_ConnectionStore;
 
 		volatile bool m_Stoped;
+		volatile bool m_Started;
 
 		boost::filesystem::path m_FilePath;
 		boost::filesystem::ofstream m_File;
-
-		std::deque<HiLevelScannerController::ScanInfoStorePtr_t> m_Queue;
 
 		StopLasyReporter_t m_StopLasyReporter;
 

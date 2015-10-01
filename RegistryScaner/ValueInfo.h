@@ -24,5 +24,6 @@ namespace RegistryScanner {
 	};
 
 	std::wstring ToWideString(ValueInfo const& info);
+	std::string ToString(ValueInfo const& info);
 
 } /// end namespace RegistryScanner

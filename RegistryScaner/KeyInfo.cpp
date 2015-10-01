@@ -6,6 +6,7 @@
 
 #include "stdafx.h"
 #include "KeyInfo.h"
+#include "StringCnv.h"
 
 #include <boost/format.hpp>
 
@@ -22,6 +23,15 @@ namespace RegistryScanner {
 			% info.subKeysCount
 			% info.valuesForKeyCount
 		);
+	}
+
+	std::string ToString(KeyInfo const& info)
+	{
+		return boost::str(boost::format("\tKey info: name: %1%, sub key count: %2%, value count: %3%")
+			% Details::StringCnv::w2a(info.classNameBuffer.ToString())
+			% info.subKeysCount
+			% info.valuesForKeyCount
+			);
 	}
 
 } /// end namespace RegistryScanner
